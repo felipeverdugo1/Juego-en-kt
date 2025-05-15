@@ -1,0 +1,188 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="5dp"
+
+    tools:context=".ui.activities.game.GameActivity">
+
+    <TextView
+        android:id="@+id/tvTituloJuego"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:paddingBottom="16dp"
+        android:text="@string/limpia_la_cabeza_del_caballo"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/tvFeedback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="@string/arrastra_una_herramienta"
+        android:textSize="18sp" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/frameJuego"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:id="@+id/imgCaballo"
+            android:layout_width="350dp"
+            android:layout_height="320dp"
+            android:contentDescription="@string/imagen_del_caballo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/patas" />
+
+
+        <ImageView
+            android:id="@+id/mancha1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="108dp"
+            android:layout_marginTop="220dp"
+            android:contentDescription="@string/mancha_1"
+            android:src="@drawable/mancha"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/mancha2"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="240dp"
+            android:layout_marginTop="220dp"
+            android:contentDescription="@string/mancha_2"
+            android:src="@drawable/mancha"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+        <ImageView
+            android:id="@+id/mancha3"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="128dp"
+            android:layout_marginTop="320dp"
+            android:contentDescription="@string/mancha_3"
+            android:src="@drawable/mancha"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/mancha4"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="270dp"
+            android:layout_marginTop="320dp"
+            android:contentDescription="@string/mancha_4"
+            android:src="@drawable/mancha"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="-127dp">
+
+
+            <ImageView
+                android:id="@+id/herramienta1"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:contentDescription="@string/herramienta_1"
+                android:tag="vertical"
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="7dp"
+                tools:layout_editor_absoluteY="504dp"
+                tools:src="@drawable/cepillo_blando"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/herramienta2"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:contentDescription="@string/herramienta_2"
+                android:tag="vertical"
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="87dp"
+                tools:layout_editor_absoluteY="504dp"
+                tools:src="@drawable/cepillo_blando"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/herramienta3"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:contentDescription="@string/herramienta_3"
+                android:tag="vertical"
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="159dp"
+                tools:layout_editor_absoluteY="504dp"
+                tools:src="@drawable/cepillo_blando"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/herramienta4"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:contentDescription="@string/herramienta_4"
+                android:tag="vertical"
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="239dp"
+                tools:layout_editor_absoluteY="504dp"
+                tools:src="@drawable/cepillo_blando"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/herramienta5"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:contentDescription="@string/herramienta_5"
+                android:tag="vertical"
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="319dp"
+                tools:layout_editor_absoluteY="504dp"
+                tools:src="@drawable/cepillo_blando"
+                tools:visibility="visible" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnGuardarYSalir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:tag="vertical"
+            android:text="Guardar y Salir"
+            android:layout_margin="16dp"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+</LinearLayout>

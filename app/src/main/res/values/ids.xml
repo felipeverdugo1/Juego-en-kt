@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="textName" type="id" />
+    <item name="btnEdit" type="id" />
+    <item name="btnDelete" type="id" />
+    <item name="btnConfigGame" type="id" />
+    <item name="btnPlayGame" type="id" />
+    <item name="btnUpdate" type="id" />
+
+
+</resources>

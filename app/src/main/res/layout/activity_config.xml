@@ -1,0 +1,82 @@
+<!-- res/layout/activity_config.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp"
+    tools:context=".ui.activities.game.ConfigActivity">
+
+    <TextView
+        android:id="@+id/tvConfigTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Selecciona la dificultad"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:paddingBottom="32dp"/>
+
+    <Button
+        android:id="@+id/btnFacil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:padding="12dp"/>
+
+    <Button
+        android:id="@+id/btnMedio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:padding="12dp"
+        android:layout_marginTop="16dp"/>
+
+    <Button
+        android:id="@+id/btnDificil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:padding="12dp"
+        android:layout_marginTop="16dp"/>
+
+
+
+    <RadioGroup
+        android:id="@+id/radioGroupVoice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/radioFemale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Voz femenina"
+            tools:ignore="HardcodedText" />
+
+        <RadioButton
+            android:id="@+id/radioMale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Voz masculina"/>
+        <RadioButton
+            android:id="@+id/radioNone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sin voz"/>
+    </RadioGroup>
+
+
+
+    <Button
+        android:id="@+id/btnJugar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Jugar"
+        android:padding="20dp"/>
+
+
+
+
+</LinearLayout>

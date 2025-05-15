@@ -1,0 +1,63 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvBienvenido"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+
+        android:gravity="center"
+        android:padding="16dp" />
+
+
+
+    <Button
+        android:id="@+id/btnEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Editar" />
+
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Borrar" />
+
+    <Button
+        android:id="@+id/btnVerEstadisticas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ver Partidas/Estadísticas"
+        tools:ignore="HardcodedText" />
+
+
+    <Button
+        android:id="@+id/btnConfigGame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Configurar Juego" />
+
+    <Button
+        android:id="@+id/btnPlayGame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Jugar" />
+
+
+
+
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Volver"
+        tools:ignore="HardcodedText" />
+
+</LinearLayout>

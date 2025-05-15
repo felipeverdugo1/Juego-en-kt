@@ -1,0 +1,76 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="5dp"
+    tools:context=".ui.activities.game.PreLevelActivity">
+
+
+    <TextView
+        android:id="@+id/tvParteDelCuerpo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:paddingBottom="16dp"
+        tools:text="@string/cabeza"
+        android:textSize="32sp"
+        android:textStyle="bold" />
+
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp">
+
+
+        <ImageView
+            android:id="@+id/imgCaballo"
+            android:layout_width="400dp"
+            android:layout_height="320dp"
+            android:padding="40dp"
+            android:src="@drawable/img_caballo2"
+            android:contentDescription="@string/imagen_del_caballo"
+        />
+
+
+
+        <ImageView
+            android:id="@+id/imgSilueta"
+            android:layout_width="120dp"
+            android:layout_height="220dp"
+            android:layout_gravity="start|bottom"
+            android:layout_marginStart="150dp"
+            android:contentDescription="@string/silueta"
+            tools:src="@drawable/silueta_right" />
+
+
+
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tvNivel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="16dp"
+        tools:text="Nivel 1"
+        android:textSize="18sp" />
+
+
+        <Button
+            android:id="@+id/btnSiguiente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/siguiente"
+            android:textSize="13sp"
+            android:padding="16dp"
+           />
+
+
+
+
+</LinearLayout>

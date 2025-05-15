@@ -1,0 +1,29 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.AprendamosALimpiar" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Color de fondo general -->
+        <item name="android:windowBackground">#78C6C9</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <!-- Color del texto -->
+        <item name="android:textColorPrimary">#000000</item>
+
+        <!-- Color de los botones -->
+        <item name="colorPrimary">#E8C72A</item>
+        <item name="colorPrimaryVariant">#D4B220</item>
+
+        <!-- Color de las tarjetas o áreas destacadas -->
+        <item name="android:colorBackground">#D3D3D3</item>
+
+
+    </style>
+
+
+    <style name="Widget.Button.MiApp" parent="Widget.Material3.Button">
+        <item name="android:backgroundTint">#E8C72A</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+
+</resources>

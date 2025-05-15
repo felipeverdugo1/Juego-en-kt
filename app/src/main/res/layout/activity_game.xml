@@ -1,0 +1,155 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="5dp"
+    tools:context=".ui.activities.game.GameActivity">
+
+    <TextView
+        android:id="@+id/tvTituloJuego"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:paddingBottom="16dp"
+        android:text="@string/limpia_la_cabeza_del_caballo"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/tvFeedback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="@string/arrastra_una_herramienta"
+        android:textSize="18sp" />
+
+
+    <FrameLayout
+
+        android:id="@+id/frameJuego"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+
+        >
+
+        <ImageView
+            android:id="@+id/imgCaballo"
+            android:layout_width="320dp"
+            android:layout_height="320dp"
+            android:contentDescription="@string/imagen_del_caballo"
+
+            tools:src="@drawable/cuello"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"/>
+
+
+        <ImageView
+            android:id="@+id/mancha1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:contentDescription="@string/mancha_1"
+            android:src="@drawable/mancha"
+            android:translationX="100dp"
+
+            android:translationY="0dp" />
+
+        <ImageView
+            android:id="@+id/mancha2"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:contentDescription="@string/mancha_2"
+            android:src="@drawable/mancha"
+            android:translationX="-45dp"
+            android:translationY="50dp"/>
+
+        <ImageView
+            android:id="@+id/mancha3"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:contentDescription="@string/mancha_3"
+            android:src="@drawable/mancha"
+            android:translationX="25dp"
+            android:translationY="25dp"/>
+
+        <ImageView
+            android:id="@+id/mancha4"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:contentDescription="@string/mancha_4"
+            android:src="@drawable/mancha"
+            android:translationX="-105dp"
+            android:translationY="25dp"/>
+
+
+
+
+        <ImageView
+            android:id="@+id/herramienta1"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@string/herramienta_1"
+            android:tag="vertical"
+            android:visibility="gone"
+            tools:src="@drawable/rasqueta_blanda"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/herramienta2"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@string/herramienta_2"
+            android:tag="vertical"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/herramienta3"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@string/herramienta_3"
+            android:tag="vertical"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/herramienta4"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@string/herramienta_4"
+            android:tag="vertical"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/herramienta5"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@string/herramienta_5"
+            android:tag="vertical"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+
+
+    </FrameLayout>
+
+
+</LinearLayout>
