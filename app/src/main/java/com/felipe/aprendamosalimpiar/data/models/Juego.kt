@@ -38,8 +38,10 @@ enum class NivelJuego(
 }
 
 object ConfiguracionJuego {
+
     // La dificultad se mantiene solo mientras la app está en ejecución
     lateinit var dificultad: Dificultad
+    var patientId : Long = 0
     lateinit var nivel: NivelJuego
     // Nueva propiedad para la voz (valor predeterminado: femenina)
     var voz: TipoVoz = TipoVoz.NINGUNA
@@ -47,13 +49,16 @@ object ConfiguracionJuego {
     // Enums para organizar las opciones
     enum class TipoVoz { FEMENINA, MASCULINA, NINGUNA }
 
-    fun iniciarJuego() {
+    fun iniciarJuego(patient_id : Long) {
+
+
         // Se asegura que la dificultad esté inicializada antes de comenzar
         if (!this::dificultad.isInitialized) {
             // Si no está inicializada, asigna un valor predeterminado (por ejemplo, MEDIO)
             dificultad = Dificultad.FACIL
         }
         nivel = NivelJuego.NIVEL_1
+        patientId = patient_id
     }
 
     fun actualizarDificultad(nuevaDificultad: Dificultad) {

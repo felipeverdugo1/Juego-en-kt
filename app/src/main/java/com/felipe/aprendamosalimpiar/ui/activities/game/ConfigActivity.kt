@@ -25,6 +25,7 @@ class ConfigActivity : AppCompatActivity() {
         btnMedio.text = Dificultad.MEDIO.name
         val btnDificil = findViewById<Button>(R.id.btnDificil)
         btnDificil.text = Dificultad.DIFICIL.name
+        val patientId = intent.getLongExtra("patient_id", 0)
 
 
         btnFacil.setOnClickListener {
@@ -45,7 +46,7 @@ class ConfigActivity : AppCompatActivity() {
 
         btnJugar.setOnClickListener {
             val intent = Intent(this, PreLevelActivity::class.java)
-            ConfiguracionJuego.iniciarJuego()
+            ConfiguracionJuego.iniciarJuego(patientId)
             startActivity(intent)
         }
 

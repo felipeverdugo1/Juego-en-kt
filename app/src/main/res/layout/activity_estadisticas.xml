@@ -4,7 +4,14 @@
     android:orientation="vertical">
 
 
-
+    <TextView
+        android:id="@+id/tvEmptyMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No se encontraron partidas para este paciente"
+        android:visibility="gone"
+        android:gravity="center"
+        android:padding="16dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerEstadisticas"

@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.felipe.aprendamosalimpiar.R
+import com.felipe.aprendamosalimpiar.data.models.ConfiguracionJuego
 
 class PasarNivelActitvity : AppCompatActivity() {
 
@@ -47,9 +48,11 @@ class PasarNivelActitvity : AppCompatActivity() {
         mensaje = intent.getStringExtra("MENSAJE").toString()
 
         val ttsHelper = TTSHelper(this)
-        Handler(Looper.getMainLooper()).postDelayed({
-            ttsHelper.speak(mensaje)
-        }, 100)
+        if (ConfiguracionJuego.voz != ConfiguracionJuego.TipoVoz.NINGUNA) {
+            Handler(Looper.getMainLooper()).postDelayed({
+                ttsHelper.speak(mensaje)
+            }, 100)
+        }
 
 
 

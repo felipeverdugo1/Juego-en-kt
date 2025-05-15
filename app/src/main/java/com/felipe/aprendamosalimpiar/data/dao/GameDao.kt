@@ -7,6 +7,14 @@ interface GameDao {
     @Insert
     suspend fun insert(game: Game)
 
+
+
+
+    @Insert
+    suspend fun insertAll(games: List<Game>)
+
+
+
     @Query("SELECT * FROM games WHERE patientId = :patientId")
     suspend fun getPartidasPorPaciente(patientId: Long): List<Game>
 }

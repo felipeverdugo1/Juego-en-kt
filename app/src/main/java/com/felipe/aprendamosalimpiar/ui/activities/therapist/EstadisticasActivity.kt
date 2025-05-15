@@ -8,68 +8,69 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.felipe.aprendamosalimpiar.R
 import com.felipe.aprendamosalimpiar.data.AppDatabase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+class EstadisticasActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_estadisticas)
 
-class EstadisticasActivity  : AppCompatActivity() {
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerEstadisticas)
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
+        val pacienteId = intent.getLongExtra("patient_id", 0L)
+        val patientName = intent.getStringExtra("patient_name")
 
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            setContentView(R.layout.activity_estadisticas)
+        if (pacienteId == 0L) {
+            Log.e("EstadisticasActivity", "ID de paciente inválido")
+            return
+        }
 
-            val recyclerView = findViewById<RecyclerView>(R.id.recyclerEstadisticas)
-            recyclerView.layoutManager = LinearLayoutManager(this)
+        lifecycleScope.launch {
+            try {
+                val db = AppDatabase.getDatabase(this@EstadisticasActivity)
+                val partidas = db.gameDao().getPartidasPorPaciente(pacienteId)
 
-            // Obtén el ID del paciente (deberías pasarlo desde la actividad anterior)
-            val pacienteId = intent.getLongExtra("patient_id", 0L)
-
-
-            val patientName = intent.getStringExtra("patient_name")
-
-//            val tvBienvenido = findViewById<TextView>(R.id.tvBienvenido)
-//
-//            tvBienvenido.text = "Ha seleccionada al paciente, ${patientName?.uppercase()}"
-
-            GlobalScope.launch(Dispatchers.IO) {
-                val partidas = AppDatabase.getDatabase(this@EstadisticasActivity)
-                    .gameDao()
-                    .getPartidasPorPaciente(pacienteId)
+                Log.d("EstadisticasActivity", "Partidas encontradas: ${partidas.size}")
 
                 runOnUiThread {
-                    recyclerView.adapter = PartidaAdapter(partidas)
+                    if (partidas.isEmpty()) {
+                        findViewById<TextView>(R.id.tvEmptyMessage).visibility = View.VISIBLE
+                    } else {
+                        recyclerView.adapter = PartidaAdapter(partidas)
+                    }
                 }
+            } catch (e: Exception) {
+                Log.e("EstadisticasActivity", "Error al obtener partidas", e)
             }
         }
     }
+}
 
-    class PartidaAdapter(private val partidas: List<Game>) : RecyclerView.Adapter<PartidaAdapter.ViewHolder>() {
-        class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val tvFecha: TextView = view.findViewById(R.id.tvFecha)
-            val tvDificultad: TextView = view.findViewById(R.id.tvDificultad)
-            val tvUltimoNivel: TextView = view.findViewById(R.id.tvLastLevel)
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_partida, parent, false)
-            return ViewHolder(view)
-        }
-
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val partida = partidas[position]
-            Log.d("pepe",partida.date)
-            holder.tvFecha.text = "Fecha: ${partida.date}"
-            holder.tvDificultad.text = "Dificultad: ${partida.difficulty.name}"
-            holder.tvUltimoNivel.text = "Ultimo Nivel: ${partida.lastLevel.name}"
-
-        }
-
-        override fun getItemCount() = partidas.size
+class PartidaAdapter(private val partidas: List<Game>) : RecyclerView.Adapter<PartidaAdapter.ViewHolder>() {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val tvFecha: TextView = view.findViewById(R.id.tvFecha)
+        val tvDificultad: TextView = view.findViewById(R.id.tvDificultad)
+        val tvUltimoNivel: TextView = view.findViewById(R.id.tvLastLevel)
     }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_partida, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val partida = partidas[position]
+        holder.tvFecha.text = "Fecha: ${partida.date}"
+        holder.tvDificultad.text = "Dificultad: ${partida.difficulty}"
+        holder.tvUltimoNivel.text = "Último Nivel: ${partida.lastLevel}"
+    }
+
+    override fun getItemCount() = partidas.size
+}

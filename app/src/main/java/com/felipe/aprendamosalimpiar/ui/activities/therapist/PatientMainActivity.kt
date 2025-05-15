@@ -1,5 +1,6 @@
 package com.felipe.aprendamosalimpiar.ui.activities.therapist
 
+
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -85,7 +86,7 @@ class PatientMainActivity : AppCompatActivity() {
 
             findViewById<Button>(R.id.btnPlayGame).setOnClickListener {
                 val intent = Intent(this, PreLevelActivity::class.java)
-                ConfiguracionJuego.iniciarJuego()
+                ConfiguracionJuego.iniciarJuego(patient_id)
                 startActivity(intent)
 
             }

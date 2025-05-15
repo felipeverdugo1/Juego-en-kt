@@ -16,6 +16,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.felipe.aprendamosalimpiar.R
 import com.felipe.aprendamosalimpiar.data.AppDatabase
 import com.felipe.aprendamosalimpiar.data.models.ConfiguracionJuego
@@ -25,10 +26,11 @@ import com.felipe.aprendamosalimpiar.data.models.Herramienta
 import com.felipe.aprendamosalimpiar.data.models.NivelJuego
 import com.felipe.aprendamosalimpiar.data.models.ParteCuerpo
 import com.felipe.aprendamosalimpiar.data.models.TipoMovimiento
-import com.felipe.aprendamosalimpiar.ui.activities.abm.patient.CreatePatientActivity
 import com.felipe.aprendamosalimpiar.ui.activities.therapist.PatientMainActivity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -367,36 +369,78 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun guardarPartidaYSalir() {
-        db = AppDatabase.getDatabase(this)
-        // Obtén el ID del paciente (ajusta esto según tu lógica)
-        val pacienteId = intent.getLongExtra("patient_id", 0L)
-        val fecha = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(Date())
+        Log.d("GameActivity", "Iniciando guardarPartidaYSalir()")
 
-        GlobalScope.launch {
-            // Guardar en Room (en segundo plano)
-            val partida = Game(
-                patientId = pacienteId,
-                date = fecha,
-                difficulty = ConfiguracionJuego.dificultad,
-                lastLevel = ConfiguracionJuego.nivel
-            )
-            AppDatabase.getDatabase(this@GameActivity).gameDao().insert(partida)
+        val pacienteId = ConfiguracionJuego.patientId.also {
+            Log.d("GameActivity", "Paciente ID: $it")
+        }
 
-            runOnUiThread {
-                // Mostrar mensaje y cerrar (en hilo principal)
-                Toast.makeText(
-                    this@GameActivity,
-                    "Partida guardada",
-                    Toast.LENGTH_SHORT
-                ).show()
-                val intent = Intent(this@GameActivity, PatientMainActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    putExtra("patient_id", pacienteId)
+        if (pacienteId == 0L) {
+            Log.e("GameActivity", "ID de paciente inválido")
+            showErrorAndFinish("Error: ID de paciente no válido")
+            return
+        }
+
+        val fecha = try {
+            SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(Date()).also {
+                Log.d("GameActivity", "Fecha generada: $it")
+            }
+        } catch (e: Exception) {
+            Log.e("GameActivity", "Error formateando fecha", e)
+            showErrorAndFinish("Error al generar fecha")
+            return
+        }
+
+        // Usamos lifecycleScope en lugar de GlobalScope
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                Log.d("GameActivity", "Iniciando inserción en DB")
+
+                val partida = Game(
+                    patientId = pacienteId,
+                    date = fecha,
+                    difficulty = ConfiguracionJuego.dificultad.name ?: run {
+                        Log.e("GameActivity", "Dificultad es null")
+                        "UNKNOWN"
+                    },
+                    lastLevel = ConfiguracionJuego.nivel.nombre ?: run {
+                        Log.e("GameActivity", "Nivel es null")
+                        "UNKNOWN"
+                    }
+                ).also {
+                    Log.d("GameActivity", "Partida a insertar: $it")
                 }
-                startActivity(intent)
 
+                val db = AppDatabase.getDatabase(this@GameActivity)
+                val insertedId = db.gameDao().insert(partida)
+                Log.d("GameActivity", "Partida insertada con ID: $insertedId")
+
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        this@GameActivity,
+                        "Partida guardada exitosamente",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    Log.d("GameActivity", "Redirigiendo a PatientMainActivity")
+                    Intent(this@GameActivity, PatientMainActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                        putExtra("patient_id", pacienteId)
+                        startActivity(this)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("GameActivity", "Error al guardar partida", e)
+                withContext(Dispatchers.Main) {
+                    showErrorAndFinish("Error al guardar la partida: ${e.localizedMessage}")
+                }
             }
         }
+    }
+
+    private fun showErrorAndFinish(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        finish()
     }
 
         private fun esMovimientoValido(
