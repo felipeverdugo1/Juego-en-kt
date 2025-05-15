@@ -11,10 +11,14 @@ enum class Direccion {
 }
 
 
-enum class Dificultad {
-    FACIL,
-    MEDIO,
-    DIFICIL
+enum class Dificultad(
+    val intentosPermitidos: Int,  // Máximo de errores permitidos
+    val tiempoLimiteSegundos: Int, // Tiempo máximo en segundos (-1 = infinito)
+    val cantidadHerramientas: Int
+) {
+    FACIL(100, -1,1),    // Sin límite de intentos ni tiempo
+    MEDIO(5, 120,3),    // 5 intentos, 2 minutos
+    DIFICIL(3, 60,5);   // 3 intentos, 1 minuto
 }
 
 enum class EstadoCaballo {

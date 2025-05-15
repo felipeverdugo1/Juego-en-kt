@@ -45,6 +45,7 @@ object ConfiguracionJuego {
     lateinit var nivel: NivelJuego
     // Nueva propiedad para la voz (valor predeterminado: femenina)
     var voz: TipoVoz = TipoVoz.NINGUNA
+    var intentosPorNivel = 100
 
     // Enums para organizar las opciones
     enum class TipoVoz { FEMENINA, MASCULINA, NINGUNA }

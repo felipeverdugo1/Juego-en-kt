@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="5dp"
+
 
     tools:context=".ui.activities.game.GameActivity">
 
@@ -99,15 +99,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:padding="5dp"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="-127dp">
 
 
             <ImageView
                 android:id="@+id/herramienta1"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:contentDescription="@string/herramienta_1"
                 android:tag="vertical"
                 android:visibility="gone"
@@ -118,8 +117,8 @@
 
             <ImageView
                 android:id="@+id/herramienta2"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:contentDescription="@string/herramienta_2"
                 android:tag="vertical"
                 android:visibility="gone"
@@ -130,8 +129,8 @@
 
             <ImageView
                 android:id="@+id/herramienta3"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:contentDescription="@string/herramienta_3"
                 android:tag="vertical"
                 android:visibility="gone"
@@ -142,8 +141,8 @@
 
             <ImageView
                 android:id="@+id/herramienta4"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:contentDescription="@string/herramienta_4"
                 android:tag="vertical"
                 android:visibility="gone"
@@ -154,8 +153,8 @@
 
             <ImageView
                 android:id="@+id/herramienta5"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:contentDescription="@string/herramienta_5"
                 android:tag="vertical"
                 android:visibility="gone"

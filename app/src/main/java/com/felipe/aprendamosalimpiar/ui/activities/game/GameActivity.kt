@@ -16,6 +16,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
 import androidx.lifecycle.lifecycleScope
 import com.felipe.aprendamosalimpiar.R
 import com.felipe.aprendamosalimpiar.data.AppDatabase
@@ -28,7 +29,6 @@ import com.felipe.aprendamosalimpiar.data.models.ParteCuerpo
 import com.felipe.aprendamosalimpiar.data.models.TipoMovimiento
 import com.felipe.aprendamosalimpiar.ui.activities.therapist.PatientMainActivity
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
@@ -46,9 +46,9 @@ class GameActivity : AppCompatActivity() {
     private lateinit var herramienta_3: ImageView
     private lateinit var herramienta_4: ImageView
     private lateinit var herramienta_5: ImageView
-
+    private var intentosRestantes = ConfiguracionJuego.dificultad.intentosPermitidos
     private lateinit var ttsHelper: TTSHelper
-
+    private lateinit  var herramientasIncorrectas : MutableList<Herramienta>
     private lateinit var mancha_1: ImageView
     private lateinit var mancha_2: ImageView
     private lateinit var mancha_3: ImageView
@@ -59,10 +59,11 @@ class GameActivity : AppCompatActivity() {
     private val umbralMovimientoX = 50f  // Umbral para el movimiento horizontal (X)
     private val umbralMovimientoY = 70f  // Umbral para el movimiento vertical (Y)
     private val ultimosMovimientos = mutableListOf<Direccion>()
+    // En tu Activity
 
     private var lastTimeChecked = 0L  // Última vez que se detectó movimiento
     private val tiempoDelay = 300L  // Delay de 50 ms entre detecciones
-
+    private val herramientasDisponibles = mutableListOf<Herramienta>()
 
     private lateinit var estadoDelCaballo: EstadoCaballo
     private lateinit var parteCuerpo: ParteCuerpo
@@ -129,10 +130,12 @@ class GameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game2)
+        ttsHelper = TTSHelper(this)
         initComponents()
         initPreGame()
         initView()
-        initGame()
+        initHerramientas()
+
 
         var btnGuardarYSalir = findViewById<Button>(R.id.btnGuardarYSalir)
 
@@ -171,6 +174,20 @@ class GameActivity : AppCompatActivity() {
         estadoDelCaballo = EstadoCaballo.muySucio
 
 
+
+
+
+
+
+    }
+
+    private fun initView() {
+
+        val todasHerramientasViews = listOf(
+            herramienta_1, herramienta_2,
+            herramienta_3, herramienta_4, herramienta_5
+        )
+
         herramientas = listOf(
             Herramienta.RASQUETA_DURA,
             Herramienta.RASQUETA_BLANDA,
@@ -180,16 +197,141 @@ class GameActivity : AppCompatActivity() {
         )
 
 
+        // Herramientas incorrectas (excluyendo la correcta)
+         herramientasIncorrectas = herramientas.filter { it != herramientaCorrecta }.toMutableList()
+
+
+
+
+
+        herramientasDisponibles.clear()
+        herramientasDisponibles.addAll(
+            Herramienta.entries
+                .filter { it != herramientaCorrecta }
+                .shuffled()
+                .take(4)
+        )
+        herramientasDisponibles.add(herramientaCorrecta)
+        herramientasDisponibles.shuffle()
+
+
+        actualizarUIHerramientas()
+
+
+        imgCaballo.setImageResource(parteCuerpo.imagenResId)
+        cambiarEstadoDelCaballo(imgCaballo, EstadoCaballo.muySucio)
+
+
+
     }
 
-    private fun initView() {
-        imgCaballo.setImageResource(parteCuerpo.imagenResId)
-        //Dependiendo del nivel se muestran mas o menos
-        //Usamos la herramienta 1 como la correcta
-        herramienta_1.setImageResource(herramientaCorrecta.imagenResId)
-        herramienta_1.visibility = View.VISIBLE
-        cambiarEstadoDelCaballo(imgCaballo, EstadoCaballo.muySucio)
+    private fun actualizarUIHerramientas() {
+            val views = listOf(herramienta_1, herramienta_2,herramienta_3,herramienta_4, herramienta_5)
+
+            // Ocultar todas primero
+            views.forEach { it.visibility = View.GONE }
+
+            // Mostrar solo las disponibles
+            herramientasDisponibles.forEachIndexed { index, herramienta ->
+                views[index].apply {
+                    visibility = View.VISIBLE
+                    setImageResource(herramienta.imagenResId)
+                    tag = if (herramienta == herramientaCorrecta) "CORRECTA" else "INCORRECTA"
+                    setOnClickListener { onHerramientaSeleccionada(this, herramienta) }
+                }
+            }
+        }
+
+
+        private fun onHerramientaSeleccionada(view: ImageView, herramienta: Herramienta) {
+            if (herramienta == herramientaCorrecta) {
+                // CASO CORRECTO
+                var herramientaFinalNoCorrecta = bloquearHerramientasIncorrectas(view)
+                habilitarArrastre(view,herramientaFinalNoCorrecta.x,herramientaFinalNoCorrecta.y)
+                ttsHelper.speak("¡Correcto! Ahora limpia las manchas")
+            } else {
+                // CASO INCORRECTO
+                herramientasDisponibles.remove(herramienta)
+                view.visibility = View.GONE
+                intentosRestantes--
+                actualizarUIHerramientas()
+
+                if (intentosRestantes <= 0) {
+//                    gameOver()
+                    Log.d("d","findel jodo")
+                } else {
+                    ttsHelper.speak("Incorrecto. Intenta otra vez")
+                }
+            }
+        }
+
+    private fun bloquearHerramientasIncorrectas(herramienta: ImageView) : ImageView {
+        var herramientaFinalNoCorrecta = herramienta
+        listOf(herramienta_1, herramienta_2,herramienta_3,herramienta_4,herramienta_5).forEach { v ->
+            if (v.tag != "CORRECTA") {
+                v.isEnabled = false
+                v.alpha = 0.5f
+                if (!v.isGone) {
+                    herramientaFinalNoCorrecta = v
+                }
+            }
+        }
+        return  herramientaFinalNoCorrecta
+
     }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun habilitarArrastre(view: ImageView,posicionInicialHerramientaFinalX : Float , posicionInicialFinalHerramientaY : Float ) {
+
+         var posicionHerramientaX = 0f
+         var posicionHerramientaY = 0f
+        view.setOnTouchListener { v, event ->
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        posicionHerramientaX = v.x - event.rawX
+                        posicionHerramientaY = v.y - event.rawY
+                        view.bringToFront()
+                        true
+                    }
+
+                    MotionEvent.ACTION_MOVE -> {
+                        v.x = event.rawX + posicionHerramientaX
+                        v.y = event.rawY + posicionHerramientaY
+                        verificarMovimiento(v)
+                        true
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        v.animate().x(posicionInicialHerramientaFinalX).y(posicionInicialFinalHerramientaY).setDuration(300).start()
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }
+
+
+
+
+    private fun initHerramientas() {
+        // 1. Definir herramienta correcta (según nivel)
+        herramientaCorrecta = ConfiguracionJuego.nivel.herramientaRequerida
+
+        // 2. Llenar lista con 4 incorrectas + 1 correcta
+        herramientasDisponibles.clear()
+        herramientasDisponibles.addAll(
+            Herramienta.entries
+                .filter { it != herramientaCorrecta }
+                .shuffled()
+                .take(4)
+        )
+        herramientasDisponibles.add(herramientaCorrecta)
+        herramientasDisponibles.shuffle()
+
+        // 3. Mostrar en UI
+        actualizarUIHerramientas()
+    }
+
+
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -211,50 +353,9 @@ class GameActivity : AppCompatActivity() {
         listOf(mancha_1, mancha_2, mancha_3, mancha_4).forEach { contadorManchas[it.id] = 0 }
         manchasLimpias = 0
 
-
-        herramienta_1.setOnTouchListener(object : View.OnTouchListener {
-
-            //Guardo la posicion inicial de la herramienta
-            val posicionInicialHerramientaX = herramienta_1.x
-            val posicionInicialHerramientaY = herramienta_1.y
-
-
-            private var posicionHerramientaX = 0f
-            private var posicionHerramientaY = 0f
-
-
-            override fun onTouch(view: View, event: MotionEvent): Boolean {
-                when (event.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        posicionHerramientaX = view.x - event.rawX
-                        posicionHerramientaY = view.y - event.rawY
-                        view.bringToFront()
-
-
-                    }
-
-                    MotionEvent.ACTION_MOVE -> {
-                        // Cuando el usuario mueve se va actualizando la vista
-                        view.x = event.rawX + posicionHerramientaX
-                        view.y = event.rawY + posicionHerramientaY
-                        verificarMovimiento(view) //Verifica si la herramienta esta pasando por la mancha
-
-
-                    }
-
-                    MotionEvent.ACTION_UP -> {
-                        // Si el usuario suelta la herramienta vuelve a la posicion inicial
-                        view.animate()
-                            .x(posicionInicialHerramientaX)
-                            .y(posicionInicialHerramientaY)
-                            .setDuration(300) // Duración de la animación en milisegundos
-                            .start()
-                    }
-                }
-                return true
-            }
-        })
     }
+
+
 
     private fun verificarMovimiento(herramienta: View) {
 
@@ -315,14 +416,13 @@ class GameActivity : AppCompatActivity() {
             movimientoDetectado = true
             val direccion = if (movimientoY > 0) Direccion.ABAJO else Direccion.ARRIBA
             agregarMovimiento(direccion)
-            Log.d("Movimiento", "Movimiento detectado: $direccion")
+
         }
 
         if (abs(movimientoX) > umbralMovimientoX) {
             movimientoDetectado = true
             val direccion = if (movimientoX > 0) Direccion.DERECHA else Direccion.IZQUIERDA
             agregarMovimiento(direccion)
-            Log.d("Movimiento", "Movimiento detectado: $direccion")
         }
 
         if (movimientoDetectado) {
@@ -336,13 +436,6 @@ class GameActivity : AppCompatActivity() {
                 y1 < y2 + alto2 &&
                 y1 + alto1 > y2)
 
-        if (coincide && esMovimientoValido(
-                herramientaCorrecta.tipoMovimiento,
-                ultimosMovimientos
-            )
-        ) {
-            Log.d("Movimiento", "Correcto")
-        }
 
 
         return (coincide && esMovimientoValido(
@@ -391,7 +484,7 @@ class GameActivity : AppCompatActivity() {
             return
         }
 
-        // Usamos lifecycleScope en lugar de GlobalScope
+
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 Log.d("GameActivity", "Iniciando inserción en DB")

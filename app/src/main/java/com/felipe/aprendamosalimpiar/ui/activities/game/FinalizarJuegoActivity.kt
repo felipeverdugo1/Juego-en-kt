@@ -9,12 +9,14 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.felipe.aprendamosalimpiar.R
+import com.felipe.aprendamosalimpiar.data.models.ConfiguracionJuego
+import com.felipe.aprendamosalimpiar.ui.activities.therapist.PatientMainActivity
 
 class FinalizarJuegoActivity : AppCompatActivity() {
 
     private lateinit var tvView: TextView
-    private lateinit var btnSalir : Button
-    private lateinit var mensaje : String
+    private lateinit var btnSalir: Button
+    private lateinit var mensaje: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,8 +35,8 @@ class FinalizarJuegoActivity : AppCompatActivity() {
 
 
     private fun initComponents() {
-        tvView =findViewById(R.id.tvViewMensaje)
-        btnSalir= findViewById(R.id.btnSalir)
+        tvView = findViewById(R.id.tvViewMensaje)
+        btnSalir = findViewById(R.id.btnSalir)
 
     }
 
@@ -57,16 +59,15 @@ class FinalizarJuegoActivity : AppCompatActivity() {
             val intent = Intent(this, MenuActivity::class.java)
             startActivity(intent)
             // Finalizar la actividad actual para que no quede en el stack
-            finish()
+            Intent(this@FinalizarJuegoActivity, PatientMainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                putExtra("patient_id", ConfiguracionJuego.patientId)
+                startActivity(this)
+            }
+
         }
-
     }
-
-
-
-
-
-
 }
+
 
 
