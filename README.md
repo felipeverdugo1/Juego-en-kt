@@ -1,4 +1,4 @@
-# 🐴 EquinoPlay 
+# 🐴 Aprendamos a limpiar 
 
 > **Juego móvil interactivo diseñado para apoyar sesiones de equinoterapia en niños.**  
 > Desarrollado en Kotlin para Android como proyecto de asignatura optativa.
@@ -7,7 +7,7 @@
 
 ## 📌 Sobre el Proyecto
 
-**EquinoPlay** es un juego para dispositivos móviles (Android) pensado para acompañar, motivar y potenciar las sesiones de **equinoterapia** (terapia asistida con caballos) en niños. 
+**Aprendamos a limpiar** es un juego para dispositivos móviles (Android) pensado para acompañar, motivar y potenciar las sesiones de **equinoterapia** (terapia asistida con caballos) en niños. 
 
 A través de dinámicas lúdicas, mecánicas simples y estímulos visuales/sonoros adaptados, el juego busca:
 - **Estimular habilidades motrices y cognitivas:** Coordinación, memoria, atención y seguimiento de instrucciones.
