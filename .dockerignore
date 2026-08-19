@@ -1,0 +1,35 @@
+# ==========================================
+# Control de Versiones
+# ==========================================
+.git
+.gitignore
+
+# ==========================================
+# Documentación y Leame
+# ==========================================
+README.md
+LICENSE
+docs/
+
+# ==========================================
+# Archivos compilados locales y IDE
+# ==========================================
+.gradle/
+build/
+app/build/
+.idea/
+*.iml
+local.properties
+
+# ==========================================
+# Node.js / CI / Herramientas locales
+# ==========================================
+node_modules/
+npm-debug.log
+.act/
+.github/
+
+# ==========================================
+# Archivos de entorno local
+# ==========================================
+.env
